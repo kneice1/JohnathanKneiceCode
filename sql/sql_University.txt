@@ -1,0 +1,288 @@
+CREATE TABLE Student(s_ID varchar(10), 
+
+                     Name varchar(20), 
+
+                     Tot_cred numeric(3,0), 
+
+                     Department_Name varchar(30), 
+
+                     i_ID varchar(20), 
+
+                     PRIMARY KEY(s_ID)); 
+
+ 
+ 
+
+CREATE TABLE Instructor(i_ID varchar(10), Name varchar(20), Salary numeric(8,2), Department_Name varchar(30), PRIMARY KEY(i_ID)); 
+
+ 
+ 
+
+CREATE TABLE Department (Department_Name varchar(30), Building varchar(20), Budget float(10), PRIMARY KEY(Department_Name)); 
+
+ 
+ 
+
+CREATE TABLE Course(Course_ID varchar(8), 
+
+                    Title varchar(20), 
+
+                    Credit numeric(2,0), 
+
+                    Department_name varchar(30), 
+
+                    PRIMARY KEY(Course_ID)); 
+
+ 
+ 
+
+CREATE TABLE Pre_Req(Pre_req_ID varchar(8), 
+
+                     course_ID varchar(8), 
+
+                     PRIMARY KEY(Pre_req_ID,course_ID)); 
+
+ 
+ 
+
+CREATE TABLE Section(Sec_ID varchar(8), 
+
+                     Semester varchar(6), 
+
+                     Year numeric(4,0), 
+
+                     building varchar(30), 
+
+                     course_ID varchar(8), 
+
+                     roomNumber varchar(4), 
+
+                     time_slot_ID varchar(8), 
+
+                     PRIMARY KEY(Sec_ID,Year,Semester,course_ID)); 
+
+ 
+ 
+
+CREATE TABLE Classroom(Building varChar(20), 
+
+                       Room_number varchar(4), 
+
+                       Capacity int(30), 
+
+                       PRIMARY KEY(Building,Room_number)); 
+
+ 
+ 
+
+CREATE TABLE Time_slot(time_slot_ID varchar(8), 
+
+                       Day varchar(10), 
+
+                       Start_time varchar(4), 
+
+                       End_time varchar(4), 
+
+                       PRIMARY KEY(Time_slot_ID,Day,Start_time)); 
+
+ 
+ 
+
+CREATE TABLE Teaches( 
+
+    i_ID varchar(10), 
+
+    Sec_ID varchar(8), 
+
+    Course_ID varchar(8), 
+
+    Semester varchar(6), 
+
+    That_Year numeric(4,0), 
+
+    PRIMARY KEY(i_ID,Sec_ID,course_ID,Semester,That_Year)); 
+
+ 
+ 
+
+CREATE TABLE Takes( s_ID varchar(10),  
+
+                   Sec_ID varchar(8),  
+
+                   Course_ID varchar(8),  
+
+                   Semester varchar(6),  
+
+                   Year year(4,0),  
+
+                   grade varchar(2), 
+
+                   PRIMARY KEY( s_ID,sec_ID, semester, year, course_ID) 
+
+                  ); 
+
+ 
+ 
+
+ALTER TABLE Takes ADD CONSTRAINT for_key2 FOREIGN KEY( Course_ID, Sec_ID, Semester, Year )REFERENCES Section( Course_ID, Sec_ID, Semester, Year ); 
+
+ 
+ 
+
+CREATE TABLE Sec_time_slot( Semester varchar(6), 
+
+                     Year year (4,0),course_ID varchar(8), 
+
+                     roomNumber varchar(4), 
+
+                     time_slot_ID varchar(8), 
+
+              Sec_ID varchar(8), 
+
+                     Day varchar(10), 
+
+                     Start_time varchar(4), 
+
+                           PRIMARY Key(Semester,Year,roomNumber,time_slot_ID,day,Start_time));  
+
+ 
+ 
+
+ALTER TABLE Sec_time_slot ADD CONSTRAINT for_key3 FOREIGN KEY( Course_ID, Sec_ID, Semester, Year )REFERENCES Section( Course_ID, Sec_ID, Semester, Year ); 
+
+ 
+ 
+
+ALTER TABLE Course ADD FOREIGN KEY(Department_name) REFERENCES Department(Department_name);  
+
+ 
+ 
+
+ALTER TABLE Instructor ADD FOREIGN KEY(Department_name) REFERENCES Department(Department_name);  
+
+ 
+ 
+
+ALTER TABLE Pre_Req ADD FOREIGN KEY(course_ID) REFERENCES Course(course_ID); 
+
+ALTER TABLE Section ADD FOREIGN KEY(building,roomNumber) REFERENCES Classroom(building,roomNumber); 
+
+ALTER TABLE Section ADD FOREIGN KEY(course_ID) REFERENCES Course(course_ID); 
+
+ALTER TABLE Pre_Req ADD FOREIGN KEY(Pre_req_ID) REFERENCES Course(course_ID); 
+
+ 
+ 
+
+ALTER TABLE Sec_time_slot ADD FOREIGN KEY(time_slot_id,day, start_time) REFERENCES Time_slot(time_slot_id,day, start_time); 
+
+ 
+ 
+
+ALTER TABLE Sec_time_slot ADD FOREIGN KEY(Sec_ID,Year,Semester,course_ID) REFERENCES Section(Sec_ID,Year,Semester,course_ID); 
+
+ 
+ 
+
+ALTER TABLE Student ADD FOREIGN KEY(i_ID) REFERENCES Instructor(i_ID),ADD FOREIGN KEY(Department_Name) REFERENCES Department(Department_Name); 
+
+ 
+ 
+
+ALTER TABLE Takes ADD FOREIGN KEY(s_ID) REFERENCES Student(s_ID),ADD FOREIGN KEY(sec_ID, semester, year, course_ID) REFERENCES Section(sec_ID, semester, year, course_ID); 
+
+ 
+ 
+
+ 
+ 
+
+ALTER TABLE Teaches ADD FOREIGN KEY(i_ID) REFERENCES Instructor(i_ID); 
+
+ALTER TABLE 
+
+    Teaches ADD CONSTRAINT for_key1 FOREIGN KEY( 
+
+        Course_ID, 
+
+        Sec_ID, 
+
+        Semester, 
+
+        Year 
+
+    )REFERENCES Section( 
+
+        Course_ID, 
+
+        Sec_ID, 
+
+        Semester, 
+
+        Year 
+
+    ); 
+
+ 
+ 
+
+ALTER TABLE Teaches ADD FOREIGN KEY(i_ID) REFERENCES Instructor(i_ID); 
+
+ 
+ 
+
+Adding data 
+
+INSERT INTO `Classroom` (`Building`, `roomNumber`, `Capacity`) VALUES ('Point', '113', '30'); 
+
+ 
+ 
+
+INSERT INTO `Department` (`Department_Name`, `Building`, `Budget`) VALUES ('Engineering', 'Point', '100000'); 
+
+ 
+ 
+
+INSERT INTO `Course` (`Course_ID`, `Title`, `Credit`, `Department_name`) VALUES ('comp3600', 'DataBase', '3', 'Engineering'); 
+
+ 
+ 
+
+INSERT INTO `Instructor` (`i_ID`, `Name`, `Salary`, `Department_Name`) VALUES ('1234567890', 'Tod Smith', '60000', 'Engineering'); 
+
+ 
+ 
+
+INSERT INTO `Pre_Req` (`Pre_req_ID`, `course_ID`) VALUES ('comp3600', 'comp3600'); 
+
+ 
+ 
+
+INSERT INTO `Section` (`Sec_ID`, `Semester`, `Year`, `building`, `Course_ID`, `roomNumber`) VALUES ('2022Comp', 'fall', '2022', 'Point', 'comp3600', '113'); 
+
+ 
+ 
+
+INSERT INTO `Student` (`s_ID`, `Name`, `Tot_cred`, `Department_Name`, `i_ID`) VALUES ('0000000000', 'Tim John', '34', 'Engineering', '1234567890'); 
+
+ 
+ 
+
+INSERT INTO `Takes` (`s_ID`, `Sec_ID`, `Course_ID`, `Semester`, `Year`, `grade`) VALUES ('0000000000', '2022Comp', 'comp3600', 'fall', '2022', 'A'); 
+
+ 
+ 
+
+INSERT INTO `Teaches` (`i_ID`, `Sec_ID`, `Course_ID`, `Semester`, `Year`) VALUES ('1234567890', '2022Comp', 'comp3600', 'fall', '2022'); 
+
+ 
+ 
+
+INSERT INTO `Time_slot` (`Time_slot_ID`, `Day`, `Start_time`, `End_time`) VALUES ('12121212', 'T TH', '1130', '1255'); 
+
+ 
+ 
+
+INSERT INTO `Sec_time_slot` (`Semester`, `Year`, `course_ID`, `time_slot_ID`, `Day`, `Start_time`, `Sec_ID`) VALUES ('fall', '2022', 'comp3600', '12121212', 'T TH', '1130', '2022Comp'); 
+
+ 

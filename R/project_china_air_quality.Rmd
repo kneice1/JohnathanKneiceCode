@@ -1,0 +1,119 @@
+---
+title: "China Air Quality and Weather"
+author: "Ian Johnston, Johnathan Kneice"
+date: "11/23/2021"
+output: pdf_document
+---
+
+
+## Library
+
+```{r library, message = FALSE}
+library(tidyverse)
+library(tidymodels)
+library(broom)
+library(lubridate)
+```
+
+
+## Introduction
+  We chose to look at the air quality across cities near Beijing. We came across this topic when talking about the air quality in California and thought it would be interesting to look at China's air quality. One question that we wondered when looking at the data was how did the weather affect the air quality? Does it help or make the air worse? This data was collected by Vishnu Kanduri and the University of California, Irvine. Vishnu Kanduri was interested in the idea of how climate change affects air quality. To get this data he used web scrapping to collect the data from 12 labs in 12 cities around Beijing. We chose to use only two, Wanshouxigong and Aotizhongxin since all the labs were close together the data from each lab was similar. The variables consist of 6 different gases found in the air from March 1, 2013, to February 28, 2017. We will only use 4 of these gases PM10,PM2.5, SO2 and NO2. More information about these gases below. The air quality was recorded every hour along with the weather. 
+Full data set:https://www.kaggle.com/vishnukanduri/air-quality-of-cities-in-china
+
+
+
+
+## Data
+
+```{r reading_in_files}
+china_airA<- read.csv("Wanshouxigong.csv")
+```
+
+```{r Joining_to_A}
+china_air<-china_airA%>%
+  drop_na()%>%
+  filter(RAIN<= 20)%>%
+  filter(WSPM<=10)
+
+china_air<-china_air%>%
+  mutate(
+    date=ymd_h(paste(year,month,day,hour,sep=" ")),
+    all_gases=(PM2.5/max(PM2.5))+(PM10/max(PM10))+(SO2/max(SO2))+(NO2/max(NO2))
+  )
+glimpse(china_air)
+```
+
+
+
+## Data analysis plan
+
+- The outcome (response, Y) and predictor (explanatory, X) variables you will use to answer your question.
+The Y: All_gases.
+The X: The temperature, rain, wind speed, dew point temp(DEWP) and date.
+
+- The comparison groups you will use, if applicable.
+We will use WSPM compared to all_gases, TEMP compared to all gases, RAIN compared to all gases, PRES compared to All_gases, and DEWP compared to All_gases. 
+  
+ALL_gases is 4 of the gases made into one variable. We have also looked at the 4 gases individually. 
+
+```{r}
+pairs(china_air[,6:9], pch = 19, cex = 0.3, lower.panel = NULL)
+```
+
+
+PM2.5 - particles that are 2.5 microns or smaller, formed primarily from combustion. Chemicals from coal power plants, car exhaust or fireplaces can react with water vapor in the atmosphere and sunlight to form new particles or compounds. Since the matter is so small, the chemicals are hard to find but they could include sulfate, nitrate, ammonium, elemental carbon, organic carbon, silicon, sodium ion and many more.
+
+PM10 - particles that are 10 microns or smaller. These particles are formed mainly from human emissions, secondary atmospheric reactions, and natural sources. An example of these sources is natural dust from dry areas in the Middle East or sea salt in North-Western Europe.
+
+SO2 - sulfur dioxide is from the family of sulfur oxides. Sulfur dioxide is the most important and can help indicate larger groups of sulfur oxides. The largest source pf SO2 is the burning of fossil fuels in power plants and other industrial facilities. SO2 can penetrate deep into the lungs and cause many health problems.
+
+NO2 - nitrogen dioxide is part of the nitrogen oxides group. Nitrogen dioxide is also an indicator for the entire group of nitrogen oxides. The main source is from the burning of fuel like from cars, trucks, buses, power plants, and off-road equipment. NO2 can irritate airways and aggravate respiratory diseases like asthma. NO2 can interact with water, oxygen, and other chemicals to form acid rain.
+
+All_gases compared to days of each month over one year.
+```{r point_of_all_gases}
+ggplot(data = china_air, aes(x = date, y = all_gases)) +
+  geom_point(alpha=.3) +
+  geom_smooth()
+```
+
+
+We have found that when you compare all_gases to the temperature the gases decrease while the temperature increases.
+```{r temp}
+ggplot(china_air,aes(x = TEMP, y = all_gases)) +
+  geom_point(alpha=.3) +
+  geom_smooth()
+```
+
+We have also found that when it rains there are less gases in the air. 
+```{r rain}
+ggplot(china_air,aes(x = RAIN, y = all_gases)) +
+  geom_point(alpha=.5) +
+  geom_smooth()
+```
+Wind would seem to have little effect on the air quality.
+```{r}
+ggplot(data = china_air, aes(x = WSPM, y = all_gases)) +
+  geom_point(alpha=.5) +
+  geom_smooth()
+```
+
+
+Linear model
+```{r}
+china_ln<-linear_reg() %>%
+  set_engine("lm") %>%
+  fit(all_gases~date+TEMP+WSPM+RAIN+PRES+DEWP, data = china_air)
+  glance(china_ln)$r.squared
+```
+The gases are not as highly correlated with the weather as we had originally thought.
+
+
+- The method(s) that you believe will be useful in answering your question(s). (You can update these later as you work on your project.)
+
+We think that we will use many of the standard tidyverse functions like filter and mutate. We will use the lm to reveal some of the hard-to-see correlations between the variables. We also plan to make a linear model.
+
+
+- What results from these specific statistical methods are needed to support your hypothesized answer?
+
+We hope that by using a linear model we can find out why the air quality is better in the warmer more rainy months.
+

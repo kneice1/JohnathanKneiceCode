@@ -1,0 +1,336 @@
+CREATE TABLE hotel(
+				  hotel_ID varchar(4),
+                  number_of_rooms numeric(4,0),
+                  location varchar(30),
+                  number_of_workers numeric(4,0),
+                  average_room_price numeric(5,2),
+                  PRIMARY KEY(hotel_ID));
+
+
+CREATE TABLE room(
+				  room_number varchar(4),
+                  room_type varChar(20),
+                  price numeric(7,2),
+                  number_of_beds numeric(2,0),
+                  pet_friendly varchar(3),
+                  smoke_friendly varchar(3),
+                  PRIMARY KEY(room_number));
+
+
+CREATE TABLE hotel_room(
+		  hotel_ID varchar(4),
+                  room_number varchar(4),
+                  PRIMARY KEY(hotel_ID,room_number),
+				  FOREIGN KEY(hotel_ID) REFERENCES hotel(hotel_ID),
+				  FOREIGN KEY(room_number) REFERENCES room(room_number));
+
+
+CREATE TABLE worker(
+		  worker_ID varchar(4),
+                  name varchar(20),
+                  pay numeric(9,2),
+                  PRIMARY KEY(worker_ID));
+
+
+CREATE TABLE guest(
+		  guest_ID varchar(5),
+                  name varchar(20),
+                  address varchar(30),
+                  loyalty_card_no numeric(7,0),
+                  PRIMARY KEY(guest_ID));
+				  
+
+CREATE TABLE issue(
+		  issue_ID varChar(10),
+                  date date,
+                  issue_description varChar(100),
+                  follow_up varChar(100),
+                  PRIMARY KEY(issue_ID));
+
+
+CREATE TABLE room_issue(
+				  issue_ID varChar(10),
+                  room_number varChar(4),
+                  PRIMARY KEY(issue_ID,room_number),
+				  FOREIGN KEY(room_number) REFERENCES room(room_number),
+				  FOREIGN KEY(issue_ID) REFERENCES issue(issue_ID));
+
+
+CREATE TABLE work_room(
+				  room_number varchar(4),
+                  hotel_ID varChar(4),
+                  worker_ID varchar(4),
+                  PRIMARY KEY(room_number),
+				  FOREIGN KEY(hotel_ID) REFERENCES hotel_Room(hotel_ID),
+				  FOREIGN KEY(worker_ID) REFERENCES worker(worker_ID));
+
+
+CREATE TABLE reservation(
+				  reservation_number numeric(5,0),
+                  room_number varchar(4),
+                  guest_ID varchar(5),
+                  request_date date,
+                  desired_check_in date,
+                  desired_check_out date,
+                  finalize_Date date,
+                  PRIMARY KEY(reservation_number),
+				  FOREIGN KEY(guest_ID) REFERENCES guest(guest_ID),
+				  FOREIGN KEY(room_number) REFERENCES room(room_number));
+
+
+CREATE TABLE booking(
+				  booking_ID numeric(5,0),
+                  room_number varchar(4),
+                  guest_ID varchar(5),
+                  check_in date,
+                  check_out date,
+                  PRIMARY KEY(booking_ID),
+				  FOREIGN KEY(guest_ID) REFERENCES guest(guest_ID),
+				  FOREIGN KEY(room_number) REFERENCES room(room_number));
+
+
+CREATE TABLE cleaning(
+				  room_number varchar(4),
+                  cleaning varchar(4),
+                  worker_ID varchar(4),
+                  ready varchar(4),
+                  PRIMARY KEY(room_number),
+				  FOREIGN KEY(worker_ID) REFERENCES worker(worker_ID));
+
+
+CREATE TABLE post_guest_departure_work(
+				  room_number varchar(4),
+                  accessories_check varchar(50),
+                  payment numeric(16),
+                  guest_ID varchar(5),
+                  PRIMARY KEY(room_number,guest_ID),
+				  FOREIGN KEY(guest_ID) REFERENCES guest(guest_ID));
+
+
+CREATE TABLE hotel_worker(
+				  hotel_ID varchar(4),
+                  worker_ID varchar(4),
+                  PRIMARY KEY(worker_ID,hotel_ID),
+				  FOREIGN KEY(worker_ID) REFERENCES worker(worker_ID),
+				  FOREIGN KEY(hotel_ID) REFERENCES hotel(hotel_ID));
+
+
+
+INSERT INTO `guest` (`guest_ID`, `name`, `address`, `loyalty_card_no`) VALUES
+('A2345', 'John Smith', '12345 South Road', '1111111'),
+('A2222', 'Dave Truck', '1273 North Road', '7876907'),
+('A7865', 'Garner Johns', '190 Lakerson N', '987640'),
+('A4090', 'Bertie Wiley', '8765 Fish St', '987540'),
+('A4987', 'Silas Dean', '87690 Maxtown Rd', '9871234'),
+
+('A5427', 'Jose Tems', '528 Lamed St', '1482490'),
+('A9410', 'Adam Waner', '7644 Lamed St', '5199024'),
+('A5555', 'Ericka Moner', '999 Stanford Rd', '7774420'),
+('A5207', 'John Smith', '7844 Hamilton Rd', '9931703'),
+('A2195', 'Rosa Stern', '941 Park Rd', '6241950');
+
+
+INSERT INTO `hotel` (`hotel_ID`, `number_of_rooms`, `location`, `number_of_workers`, `average_room_price`) VALUES
+('B675', '100', '20 Uptown Ave NY', '52', '789.90'),
+('S309', '98', '987 LakeFront Rd NM', '89', '100.89'),
+('Q345', '39', '987 McRoad Ave OH', '20', '30.99'),
+('W987', '87', '98 Queens St NY', '34', '765.87'),
+('O098', '89', '100 Old street Rd NH', '32', '56.99'),
+
+('W825', '125', '999 Franklin Rd CA', '60', '800.25'),
+('T512', '55', '62 Moss St OH', '32', '73.99'),
+('B123', '20', '128 St NY', '11', '101.72'),
+('A101', '399', '67 Washington Ave WA', '192', '150.67'),
+('R001', '222', '425 Center Rd AZ', '104', '92.83');
+
+
+INSERT INTO `room` (`room_number`, `room_type`, `price`, `number_of_beds`, `pet_friendly`, `smoke_friendly`) VALUES
+('A218', 'Single Room', '89.89', '1', 'No', 'Yes'),
+('B876', 'Double Room', '76.90', '2', 'Yes', 'No'),
+('B743', 'Holywood Twin', '309.09', '2', 'No', 'Yes'),
+('Y790', 'Twin Room', '129.87', '2', 'Yes', 'Yes'),
+('B659', 'Twin Room', '98.99', '2', 'No', 'No'),
+
+('A010', 'Triple Room', '125.99', '3', 'No', 'No'),
+('B101', 'Single Room', '55.04', '1', 'No', 'No'),
+('B076', 'Double Room', '101.97', '2', 'Yes', 'Yes'),
+('B662', 'Quad Room', '179.72', '4', 'Yes', 'No'),
+('A001', 'Single Room', '40.25', '1', 'No', 'No'),
+('A222', 'Twin Room', '52.99', '2', 'Yes', 'No');
+
+
+INSERT INTO `issue` (`issue_ID`, `date`, `issue_description`, `follow_up`) VALUES
+('B908764785', '2001-09-09', 'Broken Sink and hole in the floor.', 'Sink fixed.'),
+('B897625189', '2019-12-12', 'Dish Washer leaking.', 'New Dish Washer installed.'),
+('B787638730', '2016-08-05', 'Lights not turning on.', 'Did not find fix for lights.'),
+('J987473928', '2009-11-10', 'Door not locking.', 'Door found to be working correctly.'),
+('K928372645', '2000-09-08', 'Window not closing correctly.', 'Windows need replaced.'),
+
+('A652789104', '2010-08-05', 'A.C. is broken', 'A.C. needs replaced.'),
+('C628103689', '2009-01-01', 'Bedframe is broken.', 'Replaced bedframe with new one.'),
+('B121416290', '2020-04-19', 'Door not locking.', 'Replaced door lock with new one.'),
+('B006991401', '2022-07-05', 'Toilet not flushing.', 'Unclogged the toilet.'),
+('I749919520', '2013-02-02', 'Desk is broken.', 'Desk is not broken.');
+
+
+INSERT INTO `worker` (`worker_ID`, `name`, `pay`) VALUES
+('W309', 'Starling Hammond', '30000.98'),
+('W376', 'Morton Wilson', '28000.98'),
+('B872', 'Tim Dog', '15800.93'),
+('W763', 'Kat Dog', '82189.98'),
+('W293', 'Kid McDonald', '40088.98'),
+
+('A278', 'Hannah Martin', '64000'),
+('C103', 'Jenna Les', '54000'),
+('B477', 'James Lacey', '20000'),
+('W422', 'Stacy Tems', '15000'),
+('W308', 'Alejandro Few', '120000');
+
+
+INSERT INTO `booking` (`booking_ID`, `room_number`, `guest_ID`, `check_In`, `check_Out`) VALUES 
+('65421', 'A218', 'A2222', '2001-11-12', '2001-12-12'),
+('56403', 'B659', 'A2345', '2019-08-09', '2019-08-10'),
+('34521', 'Y790', 'A4090', '2019-10-02', '2019-08-03'),
+('87342', 'B876', 'A7865', '2011-08-01', '2011-10-10'),
+('87635', 'Y790', 'A4090', '2009-09-12', '2009-12-12'),
+
+('17290', 'A010', 'A5427', '2020-10-05', '2020-10-11'),
+('95107', 'B101', 'A9410', '2015-02-12', '2015-02-20'),
+('51890', 'B076', 'A5555', '2021-12-27', '2022-01-10'),
+('00126', 'B662', 'A5207', '2009-05-05', '2009-06-02'),
+('38910', 'A001', 'A2195', '2014-09-20', '2014-10-23');
+
+
+INSERT INTO `cleaning` (`room_number`, `cleaning`, `worker_ID`, `ready`) VALUES
+('A210', 'No', 'B872', 'No'),
+('B876', 'Yes', 'W293', 'No'),
+('B743', 'Yes', 'W293', 'Yes'),
+('B659', 'Yes', 'W376', 'No'),
+('Y790', 'No', 'W309', 'No'),
+
+('A010', 'Yes', 'A278', 'No'),
+('B101', 'Yes', 'C103', 'Yes'),
+('B076', 'No', 'B477', 'No'),
+('B662', 'No', 'W422', 'No'),
+('A001', 'Yes', 'W308', 'Yes');
+
+
+INSERT INTO `hotel_room` (`hotel_ID`, `room_number`) VALUES
+('B675', 'B659'),
+('B675', 'B876'),
+('B675', 'B743'),
+('O098', 'A218'),
+('Q345', 'Y790'),
+
+('W825', 'A010'),
+('T512', 'B101'),
+('B123', 'B076'),
+('A101', 'B662'),
+('R001', 'A001'),
+('A101', 'A222');
+
+
+INSERT INTO `hotel_worker` (`hotel_ID`, `worker_ID`) VALUES
+('B675', 'B872'),
+('B675', 'W293'),
+('O098', 'W309'),
+('Q345', 'W309'),
+('S309', 'W763'),
+
+('W825', 'A278'),
+('T512', 'C103'),
+('B123', 'B477'),
+('A101', 'W422'),
+('R001', 'W308');
+
+
+INSERT INTO `post_guest_departure_work` (`room_number`, `accessories_check`, `payment`,`guest_ID`) VALUES
+('A218', 'All Good', '1234567890123456', 'A2222'),
+('B876', 'Alarm Clock Missing.', '0987654321123456', 'A2345'),
+('B743', 'All Good', '1111111111111111', 'A4987'),
+('Y790', 'Three Towels Missing', '2222222222222222', 'A7865'),
+('B695', 'All Good', '3333333333333333', 'A2222'),
+
+('A010', 'All Good', '7250715829016', 'A5427'),
+('B101', 'Two Water Bottles Took', '5180361969263075', 'A9410'),
+('B076', 'Two Towels Missing', '7742971037223961', 'A5555'),
+('B662', 'All Good', '2219567016728839', 'A5207'),
+('A001', 'All Good', '6281922449152860', 'A2195');
+
+
+INSERT INTO `reservation` (`reservation_number`, `room_number`, `guest_ID`, `request_date`, `desired_check_in`, `desired_check_out`, `finalize_date`) VALUES
+('34567', 'A218', 'A2222', '2019-09-08', '2019-09-08', '2019-09-12', '2019-09-12'),
+('87654', 'B659', 'A2345', '2018-12-12', '2019-09-08', '2019-12-07', '2018-09-24'),
+('12345', 'B876', 'A2222', '2010-01-08', '2010-01-12', '2010-11-12', '2010-01-08'),
+('76309', 'Y790', 'A2222', '2008-11-11', '2008-11-11', '2008-11-23', '2008-11-11'),
+('87201', 'B876', 'A7865', '2000-11-11', '2000-11-11', '2001-01-01', '2008-11-12'),
+
+('62719', 'A010', 'A5427', '2020-08-24', '2020-10-05', '2020-10-11', '2020-08-27'),
+('10381', 'B101', 'A9410', '2014-10-17', '2015-02-12', '2015-02-20', '2014-11-22'),
+('66201', 'B076', 'A5555', '2021-06-02', '2021-12-27', '2022-01-14', '2021-06-03'),
+('51792', 'B662', 'A5207', '2009-05-01', '2009-05-04', '2009-06-02', '2009-05-02'),
+('95971', 'A001', 'A2195', '2014-01-07', '2014-09-18', '2014-10-29', '2014-01-28'),
+('66179', 'A010', 'A2345', '2022-08-19', '2023-03-22', '2023-04-06', '2022-08-24');
+
+
+INSERT INTO `room_issue` (`issue_ID`, `room_number`) VALUES
+('B787638730', 'A218'),
+('B897625189', 'B659'),
+('B908764785', 'B743'),
+('J987473928', 'B876'),
+('K928372645', 'Y790'),
+
+('A652789104', 'A010'),
+('C628103689', 'B101'),
+('B121416290', 'B076'),
+('B006991401', 'B662'),
+('I749919520', 'A001');
+
+
+INSERT INTO `work_room` (`room_number`, `hotel_ID`, `worker_ID`) VALUES
+('A218', 'B675', 'B872'),
+('B876', 'O098', 'W309'),
+('B743', 'Q345', 'W763'),
+('Y790', 'Q345', 'W763'),
+('B659', 'Q345', 'W763'),
+
+('A010', 'W825', 'A278'),
+('B101', 'T512', 'C103'),
+('B076', 'B123', 'B477'),
+('B662', 'A101', 'W422'),
+('A001', 'R001', 'W308'),
+('A222', 'A101', 'W422');
+
+-- Enter a worker ID and gives the monthly salary for the worker
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `monthly_salary`(`ID` VARCHAR(4)) RETURNS int(8)
+BEGIN
+DECLARE salary INT;
+SELECT pay/12 INTO salary FROM worker WHERE worker.worker_ID = ID;
+RETURN salary;
+END $$
+DELIMITERl;
+
+-- Enter a guest's name and it gives back booking information--
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_booking_information`(IN guest_name_booked VARCHAR(30), OUT room_number_booked VARCHAR(4), OUT check_in_date date, OUT check_out_date date)
+BEGIN
+DECLARE ID VARCHAR(5);
+SELECT guest.guest_ID INTO ID FROM guest WHERE guest.name = guest_name_booked;
+SELECT booking.room_number, booking.check_in, booking.check_out INTO room_number_booked, check_in_date, check_out_date FROM booking WHERE booking.guest_ID = ID;
+END$$
+DELIMITER ;
+
+
+-- Gives back the rooms where accessories were taken--
+SELECT room_number, accessories_check, payment, guest_ID FROM post_guest_departure_work WHERE accessories_check <> 'All Good';
+
+-- Gives back the rooms that still need to be cleaned and the worker assigned to them--
+SELECT room_number, cleaning, worker_ID, ready FROM cleaning WHERE cleaning = 'No'; 
+
+
+DROP TRIGGER IF EXISTS `booking_date_check`;CREATE DEFINER=`root`@`localhost` TRIGGER `booking_date_check` BEFORE INSERT ON `booking` FOR EACH ROW BEGIN IF NEW.check_in>= NEW.check_out THEN SET NEW.check_in=NEW.check_out; END IF; END
+
+DROP TRIGGER IF EXISTS `Reservation_Date_check`;CREATE DEFINER=`root`@`localhost` TRIGGER `Reservation_Date_check` BEFORE INSERT ON `reservation` FOR EACH ROW BEGIN IF NEW.request_date> NEW.desired_check_in THEN SET NEW.desired_check_in=NEW.request_date; END IF; IF NEW.request_date>=NEW.desired_check_out THEN SET NEW.desired_check_out=NEW.request_date; END IF; IF NEW.desired_check_in>=NEW.desired_check_out THEN SET NEW.desired_check_in=NEW.desired_check_out; END IF; IF NEW.finalize_date>=NEW.desired_check_in THEN SET NEW.desired_check_in=NEW.finalize_date; END IF; END
