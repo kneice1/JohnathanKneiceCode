@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="This is project3 web page">
+    <meta name="keywords" content="date,time, images, project3 Comp3700">
+    <meta name="author" content="Johnathan Kneice">
+    <meta http-equiv="refresh" content='60'>
+    <title>Project3</title>
+    <!-- Refreshes page after 60. -->
+    <link href="project3.css" type="text/css" rel="stylesheet">
+
+</head>
+<body>
+    <h1>Project 3</h1>
+    <!-- The picture with two figcaptions.-->
+    <div id = picture>
+        <figure>
+            <figcaption id =caption> It’s 9:15 already on this fine April 2 morning!).</figcaption>
+        </figure>
+        <figure>
+            <img src="images/afternoon.jpg" alt="dog" id="img">
+            <figcaption id =description> My dog.</figcaption>
+        </figure>
+    </div>
+    <!-- Two buttons one that goes to the next image and one goes to a random image.-->
+    <div id=buttons>
+        <button id ="next" onclick="nextImage()" type="button">Next</button>
+        <button id="random" onclick="randomImage()" type="button">Random</button>
+    </div>
+    <script src="project3.js"></script>
+</body>

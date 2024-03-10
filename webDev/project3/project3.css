@@ -1,0 +1,31 @@
+body {
+    background-color: rgb(61, 61, 181);
+    color: rgb(6, 0, 0);
+    font-size: 24px;
+    text-align: center;
+
+}
+img {
+    border: 1px solid #000000;
+    border-radius: 6px;
+    padding: 4px;
+    width: 300px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+figcaption,h1{
+    background-color: rgb(255, 255, 255);
+    width: 600px;
+    margin: 0 auto;  
+}
+
+button {
+    width: 140px;
+    padding: 32px 16px;
+    background-color: #ff3636;
+    color: rgb(6, 0, 0);
+    font-size: 90%;
+}

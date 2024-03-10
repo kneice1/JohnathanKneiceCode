@@ -1,0 +1,130 @@
+/*set background to black and text font size to 24px and font color to white*/
+body {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255,255,255);
+  font-size: 24px;}
+  
+/*make the font size be 170% and make the text be underlined and have a 2px boarder that is green.*/
+h1 {
+  font-size: 170%;
+  text-decoration: underline;
+  border: 2px solid #73AD21;
+}
+/*make font size be 150%*/
+h2 {
+  font-size: 150%;
+}
+/*add some space at the top*/
+.textType{
+  margin-top: 125px;
+}
+/*make positioning fixed, add padding and make the background an image.*/
+#title{
+  position: fixed;
+  top: 0px;
+  padding: 10px;
+  margin: 0px;
+  width: 100%;
+  font-size: 300%;
+  background-image: url("images/FilamentWebsite.jpg");
+  background-repeat: repeat-x ;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  text-align: center;
+  
+}
+/*add set the background color to green and set the font.*/
+table,li,h3,p,h4,figcaption,h1 {
+  background-color: #73AD21;
+  font-family: Arial, Verdana, sans-serif;
+  }
+  /*center the text and add a blue boarder arround the text*/
+  table,img,video,h3,p,h4,figcaption,h1 {
+  text-align: center;
+  border-radius: 25px;
+  border: 5px solid #2123ad;
+  
+}
+/*center the image*/
+.images {
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+/*add space*/
+li {
+  margin: 10px 10px 10px 500px;}
+  /*center and add to width*/
+ul {
+  width: 700px;
+  list-style-position: outside;
+  display: inline-block;
+  text-align: center;}
+  /*set links to pink*/
+h4 a{
+  color: rgb(210, 62, 111);
+}
+
+p{
+  padding: 20px
+}
+
+th, td {
+  padding: 7px 10px 10px 10px;
+  letter-spacing: 0.1em;
+  font-size: 90%;
+  border-radius: 25px;}
+ /*add white boarder around each cell and make all text uppercase*/ 
+th {
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 2px solid #ffffff;
+  border-top: 1px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;}
+  /*add back boarder around each cell*/
+  td{
+    border-bottom: 2px solid #050505;
+  border-top: 1px solid #050505;
+  border-left: 2px solid #050505;
+  border-right: 2px solid #050505;
+  }
+
+tr.even {
+  background-color: #73AD21;}
+/*make when hover cell turns black*/  
+tr:hover {
+  background-color: #000707;}
+table{
+    width: 600px;
+    margin: 0 auto;            
+}
+#costTable{
+  padding-top: 25px;
+}
+/*center video*/
+video {
+  display: block;
+  margin: auto;
+}
+figcaption{
+  margin-bottom: 10px;
+}
+/*floats left images and add spacing between them*/
+.simages{
+  width: 300px;
+  float: left;
+  margin: 10px;
+}
+/*the thingeverse logo was too big so this shrinks it*/
+.medium{
+  width: 250px;
+  height: 250px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+
